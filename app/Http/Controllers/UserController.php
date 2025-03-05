@@ -57,8 +57,9 @@ class UserController extends Controller
 
         // $user = UserModel::findOrfail(1);        
         // $user = UserModel::where('username', 'manager9')->firstOrFail(); 
-        // $user = UserModel::where('level_id', 2) -> count();
+        // $user = UserModel::where('level_id', 1) -> count();
         // dd($user);
+        // return view('user', ['data' => $user]);
         $totalUsers = UserModel::count();
        
         return view('user', ['data' => $totalUsers]);
