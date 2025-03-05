@@ -20,7 +20,7 @@ class UserController extends Controller
         //     'level_id' => 4
         // ];
 
-// JS_$_Praktikum 1 no 2
+        // JS_$_Praktikum 1 no 2
         // $data = [
         //     'username' => 'manager-2',
         //     'name' => 'Manager 2',
@@ -29,7 +29,7 @@ class UserController extends Controller
         // ];
         // UserModel::create($data);
 
-// JS_$_Praktikum 1 no 2
+        // JS_$_Praktikum 1 no 2
         // $data = [
         //     'username' => 'manager-tiga',
         //     'name' => 'Manager 3',
@@ -60,8 +60,35 @@ class UserController extends Controller
         // $user = UserModel::where('level_id', 1) -> count();
         // dd($user);
         // return view('user', ['data' => $user]);
-        $totalUsers = UserModel::count();
-       
-        return view('user', ['data' => $totalUsers]);
+        // $totalUsers = UserModel::count();
+
+        // return view('user', ['data' => $totalUsers]);
+
+        // $user = UserModel::firstOrNew(
+        //     [
+        //         'username' => 'manager',
+        //         'name' => 'Manager',
+        //     ],
+        // );
+        // $user = UserModel::firstOrCreate(
+        //     [
+        //         'username' => 'manager22',
+        //         'name' => 'Manager Dua Dua',
+        //         'password' => Hash::make('12345'),
+        //         'level_id' => 2
+        //     ],
+        // );
+
+        $user = UserModel::firstOrNew(
+            [
+                'username' => 'manager33',
+                'name' => 'Manager Tiga Tiga',
+                'password' => Hash::make('12345'),
+                'level_id' => 2
+            ],
+        );
+        $user->save();
+        
+        return view('user', ['data' => $user]);
     }
 }
