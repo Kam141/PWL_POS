@@ -79,16 +79,59 @@ class UserController extends Controller
         //     ],
         // );
 
-        $user = UserModel::firstOrNew(
-            [
-                'username' => 'manager33',
-                'name' => 'Manager Tiga Tiga',
-                'password' => Hash::make('12345'),
-                'level_id' => 2
-            ],
-        );
-        $user->save();
+        // $user = UserModel::firstOrNew(
+        //     [
+        //         'username' => 'manager33',
+        //         'name' => 'Manager Tiga Tiga',
+        //         'password' => Hash::make('12345'),
+        //         'level_id' => 2
+        //     ],
+        // );
+        // $user->save();
         
-        return view('user', ['data' => $user]);
+        // return view('user', ['data' => $user]);
+
+        // $user = UserModel::create([
+        //     'username' => 'manager44',
+        //     'name' => 'Manager 44',
+        //     'password' => Hash::make('12345'),
+        //     'level_id' => 2
+        // ]);
+
+        // $user->username = 'manager55';
+
+        // $user->isDirty();
+        // $user->isDirty('username');
+        // $user->isDirty('nama');
+        // $user->isDirty('nama' ,'username');
+
+        // $user->isClean();
+        // $user->isClean('username');
+        // $user->isClean('nama');
+        // $user->isClean('nama', 'username');
+
+        // $user->save();
+
+        // $user->isDirty();
+        // $user->isClean();
+        // dd($user->isDirty());
+
+        $user = UserModel::create([
+            'username' => 'manager11',
+            'name' => 'Manager11',
+            'password' => Hash::make('12345'),
+            'level_id' => 2
+        ]);
+        
+        $user->username = 'manager12';
+
+        $user->save();
+
+        $user->wasChanged();
+        $user->wasChanged('username');
+        $user->wasChanged(['username', 'nama']);
+        $user->wasChanged('nama');
+        $user->wasChanged('nama' ,'username');
+        dd($user->wasChanged('nama' ,'username'));
     }
 }
