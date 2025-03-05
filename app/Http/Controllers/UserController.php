@@ -30,20 +30,31 @@ class UserController extends Controller
         // UserModel::create($data);
 
 // JS_$_Praktikum 1 no 2
-        $data = [
-            'username' => 'manager-tiga',
-            'name' => 'Manager 3',
-            'password' => Hash::make('12345'),
-            'level_id' => 2
-        ];
-        UserModel::create($data);
+        // $data = [
+        //     'username' => 'manager-tiga',
+        //     'name' => 'Manager 3',
+        //     'password' => Hash::make('12345'),
+        //     'level_id' => 2
+        // ];
+        // UserModel::create($data);
 
         // $data = [
         //     'name' => 'Pelanggan Pertama',
         // ];
         // UserModel::where('username', 'customer-1')->update($data);
 
-        $user = UserModel::all();
+        // $user = UserModel::all();
+        // return view('user', ['data' => $user]);
+
+        // $user = UserModel::find(1);
+        // $user = UserModel::where('level_id', 1)-> first();
+        $user = UserModel::findOr(1, ['username', 'name'], function(){
+            abort(404);
+        });
+        // $user = UserModel::find(20, ['username', 'name'], function () {
+        //     abort(404);
+        // });
+        
         return view('user', ['data' => $user]);
     }
 }
