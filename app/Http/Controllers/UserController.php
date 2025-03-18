@@ -24,7 +24,13 @@ class UserController extends Controller
             'title' => 'Daftar user yang terdaftar dalam sistem'
         ];
         $activeMenu = 'user';
-        return view('user.index', ['breadcrumb' => $breadcrumb, 'page' => $page, 'activeMenu' => $activeMenu]);
+        $level = LevelModel::all();
+        return view('user.index', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'level' => $level,
+            'activeMenu' => $activeMenu
+        ]);
 
         // $user = UserModel::with('level')->get();
         // return view('user', ['data' => $user]);
@@ -72,22 +78,34 @@ class UserController extends Controller
 
     public function list(Request $request)
     {
+        // Ambil data pengguna dengan relasi ke tabel level
         $users = UserModel::select('user_id', 'username', 'name', 'level_id')
-            ->with('level')  // Pastikan relasi 'level' sudah benar
-            ->get();
+            ->with('level');
+
+        // Filter berdasarkan level_id jika ada
+        if ($request->level_id) {
+            $users->where('level_id', $request->level_id);
+        }
 
         return DataTables::of($users)
-            ->addIndexColumn()  // Menambahkan kolom nomor urut
-            ->addColumn('aksi', function ($user) {  // Menambahkan kolom aksi
-                $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn sm">Detail</a> ';
+            // Menambahkan kolom index / no urut
+            ->addIndexColumn()
+
+            // Menambahkan kolom aksi untuk edit, hapus, dan detail
+            ->addColumn('aksi', function ($user) {
+                $btn = '<a href="' . url('/user/' . $user->user_id) . '" class="btn btn-info btn-sm">Detail</a> ';
                 $btn .= '<a href="' . url('/user/' . $user->user_id . '/edit') . '" class="btn btn-warning btn-sm">Edit</a> ';
-                $btn .= '<form class="d-inline-block" method="POST" action="' .
-                    url('/user/' . $user->user_id) . '">'
-                    . csrf_field() . method_field('DELETE') .
-                    '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin ingin menghapus data ini?\');">Hapus</button></form>';
+                $btn .= '<form class="d-inline-block" method="POST" action="' . url('/user/' . $user->user_id) . '">'
+                    . csrf_field()
+                    . method_field('DELETE')
+                    . '<button type="submit" class="btn btn-danger btn-sm" onclick="return confirm(\'Apakah Anda yakin menghapus data ini?\');">Hapus</button>
+                </form>';
                 return $btn;
             })
-            ->rawColumns(['aksi'])  // Memberitahu bahwa kolom 'aksi' berisi HTML
+
+            // Memastikan kolom aksi dianggap sebagai HTML (bukan teks biasa)
+            ->rawColumns(['aksi'])
+
             ->make(true);
     }
 
