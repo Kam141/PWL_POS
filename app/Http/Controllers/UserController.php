@@ -8,6 +8,9 @@ use App\Models\UserModel;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Validator;
+
+use function Laravel\Prompts\alert;
 
 class UserController extends Controller
 {
@@ -250,4 +253,47 @@ class UserController extends Controller
         }
     }
 
+    public function create_ajax()
+    {
+        $level = LevelModel::select('level_id', 'level_nama')->get();
+        return view('user.create_ajax') 
+                                    ->with('level', $level);
+    }
+
+    public function store_ajax(Request $request)
+    {
+        // Cek apakah request berupa AJAX
+        if ($request->ajax() || $request->wantsJson()) {
+            $rules = [
+                'level_id' => 'required|integer',
+                'username' => 'required|string|min:3|unique:m_user,username',
+                'name' => 'required|string|max:100',
+                'password' => 'required|min:6'
+            ];
+
+            // Validasi input
+            $validator = Validator::make($request->all(), $rules);
+            
+            // Jika validasi gagal
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false, // Status response, false: error/gagal, true: berhasil
+                    'message' => 'Validasi Gagal',
+                    'msgField' => $validator->errors() // Pesan error validasi
+                ]);
+            }
+
+            // Simpan data user
+            UserModel::create($request->all());
+            
+            // Response sukses
+            return response()->json([
+                'status' => true,
+                'message' => 'Data user berhasil disimpan'
+            ]);
+        }
+
+        // Jika bukan request AJAX, redirect ke halaman utama
+        return redirect('/');
+    }
 }
