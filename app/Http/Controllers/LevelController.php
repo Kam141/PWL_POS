@@ -6,7 +6,6 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Models\LevelModel;
-use Monolog\Level;
 use Yajra\DataTables\Facades\DataTables;
 class LevelController extends Controller
 {
@@ -212,7 +211,7 @@ class LevelController extends Controller
             if ($validator->fails()) {
                 return response()->json([
                     'status' => false, // Status response, false: error/gagal, true: berhasil
-                    'message' => 'yyyy Gagal',
+                    'message' => 'Validasi Gagal',
                     'msgField' => $validator->errors() // Pesan error validasi
                 ]);
             }
