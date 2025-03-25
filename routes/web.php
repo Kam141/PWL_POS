@@ -4,6 +4,7 @@ use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
 use App\Http\Controllers\StokController;
+use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
@@ -102,6 +103,23 @@ Route::group(['prefix' => 'barang'], function(){
     Route::delete('/{id}', [BarangController::class, 'destroy']);
 });
 
+Route::group(['prefix' => 'suplier'], function(){
+    Route::get('/', [SuplierController::class, 'index']);
+    Route::get('/list', [SuplierController::class, 'list']);
+    Route::get('/create', [SuplierController::class,'create']);
+    Route::post('/', [SuplierController::class, 'store']);
+    Route::get('/create_ajax', [SuplierController::class, 'create_ajax']);
+    Route::post('/ajax', [SuplierController::class, 'store_ajax']);
+    Route::get('/{id}/show_ajax', [SuplierController::class, 'show']);
+    Route::get('/{id}/edit', [SuplierController::class, 'edit']);
+    Route::put('/{id}', [SuplierController::class, 'update']);
+    Route::get('/{id}/edit_ajax', [SuplierController::class, 'edit_ajax']);
+    Route::put('/{id}/update_ajax', [SuplierController::class, 'update_ajax']);
+    Route::get('/{id}/delete_ajax', [SuplierController::class, 'confirm_ajax']);
+    Route::delete('/{id}/delete_ajax', [SuplierController::class, 'delete_ajax']);
+    Route::delete('/{id}', [SuplierController::class, 'destroy']);
+});
+
 Route::group(['prefix' => 'stok'], function(){
     Route::get('/', [StokController::class, 'index']);
     Route::get('/list', [StokController::class, 'list']);
@@ -109,6 +127,6 @@ Route::group(['prefix' => 'stok'], function(){
     Route::post('/', [StokController::class, 'store']);
     Route::get('/{id}', [StokController::class, 'show']);
     Route::get('/{id}/edit', [StokController::class, 'edit']);
-    Route::put('/{id}', [StokController::class, 'update']);
+    Route::put('/{id}' , [StokController::class, 'update']);
     Route::delete('/{id}', [StokController::class, 'destroy']);
 });
