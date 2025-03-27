@@ -237,7 +237,7 @@ class BarangController extends Controller
         // Jika bukan request AJAX, redirect ke halaman utama
         return redirect('/barang');
     }
-    public function edit_ajax(String $id)
+    public function edit_ajax(string $id)
     {
         $barang = BarangModel::find($id);
         $kategori = KategoriModel::select('kategori_id', 'kategori_nama')->get();
@@ -246,30 +246,31 @@ class BarangController extends Controller
             'kategori' => $kategori
         ]);
     }
+
     public function update_ajax(Request $request, $id)
     {
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
             $rules = [
                 'kategori_id' => 'required|integer',
-                'barang_kode' => 'required|string|unique:barang,barang_kode',
+                'barang_kode' => 'required|string|unique:barang,barang_kode,' . $id . ',barang_id',
                 'barang_nama' => 'required|string|max:100',
                 'harga_beli' => 'required|numeric|min:0',
                 'harga_jual' => 'required|numeric|min:0'
             ];
 
-            // validasi
             $validator = Validator::make($request->all(), $rules);
+
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => false, // respon json, true: berhasil, false: gagal
+                    'status' => false,    // respon json, true: berhasil, false: gagal
                     'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors() // menunjukkan field mana yang error
+                    'msgField' => $validator->errors()  // menunjukkan field mana yang error
                 ]);
             }
+
             $check = BarangModel::find($id);
             if ($check) {
-
                 $check->update($request->all());
                 return response()->json([
                     'status' => true,

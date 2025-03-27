@@ -10,44 +10,47 @@
             <div class="modal-body">
                 <div class="alert alert-danger">
                     <h5><i class="icon fas fa-ban"></i> Kesalahan!!!</h5>
-                    Data yang Anda cari tidak ditemukan.
+                    Data yang anda cari tidak ditemukan
                 </div>
                 <a href="{{ url('/barang') }}" class="btn btn-warning">Kembali</a>
             </div>
         </div>
     </div>
 @else
-    <form action="{{ url('/barang/' . $barang->barang_id . '/update_ajax') }}" method="POST" id="form-edit">
+    <form action="{{ url('/barang/' . $barang->barang_id . '/update_ajax') }}" method="POST" id="form-edit-barang">
         @csrf
         @method('PUT')
         <div id="modal-master" class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Edit Data User</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Edit Data Barang</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    
                     <div class="form-group">
-                        <label >Kode Barang</label>
-                        <input type="text" class="form-control" id="barang_kode" name="barang_kode" required>
+                        <label>Kode Barang</label>
+                        <input value="{{ $barang->barang_kode }}" type="text" name="barang_kode" id="barang_kode"
+                            class="form-control" required>
                         <small id="error-barang_kode" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label >Nama Barang</label>
-                        <input type="text" class="form-control" id="barang_nama" name="barang_nama" required>
+                        <label>Nama Barang</label>
+                        <input value="{{ $barang->barang_nama }}" type="text" name="barang_nama" id="barang_nama"
+                            class="form-control" required>
                         <small id="error-barang_nama" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label >Harga Beli</label>
-                        <input type="number" class="form-control" id="harga_beli" name="harga_beli" required>
+                        <label>Harga Beli</label>
+                        <input value="{{ $barang->harga_beli }}" type="number" name="harga_beli" id="harga_beli"
+                            class="form-control" required>
                         <small id="error-harga_beli" class="error-text form-text text-danger"></small>
                     </div>
                     <div class="form-group">
-                        <label >Harga Jual</label>
-                        <input type="number" class="form-control" id="harga_jual" name="harga_jual" required>
+                        <label>Harga Jual</label>
+                        <input value="{{ $barang->harga_jual }}" type="number" name="harga_jual" id="harga_jual"
+                            class="form-control" required>
                         <small id="error-harga_jual" class="error-text form-text text-danger"></small>
                     </div>
                 </div>
@@ -57,23 +60,36 @@
                 </div>
             </div>
         </div>
-    </div>
-</form>
-
+    </form>
     <script>
         $(document).ready(function() {
-            $("#form-edit").validate({
+            $("#form-edit-barang").validate({
                 rules: {
-                    
-                    barang_kode: { required: true, minlength: 3, maxlength: 10 },
-                    barang_nama: { required: true, minlength: 1, maxlength: 100 },
-                    harga_beli: { required: true, number: true },
-                    harga_jual: { required: true, number: true },
+                    barang_kode: {
+                        required: true,
+                        minlength: 2,
+                        maxlength: 10
+                    },
+                    barang_nama: {
+                        required: true,
+                        minlength: 3,
+                        maxlength: 100
+                    },
+                    harga_beli: {
+                        required: true,
+                        number: true,
+                        min: 0
+                    },
+                    harga_jual: {
+                        required: true,
+                        number: true,
+                        min: 0
+                    }
                 },
                 submitHandler: function(form) {
                     $.ajax({
                         url: form.action,
-                        type: form.method,
+                        type: 'PUT',
                         data: $(form).serialize(),
                         success: function(response) {
                             if (response.status) {
