@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
-    Route::middleware(['auth','authorize:ADM'])->group(function () {
+    Route::middleware(['auth','authorize:ADM, MNG, PLNG, STF'])->group(function () {
         Route::prefix('level')->group(function () {
             Route::get('/', [LevelController::class, 'index']);
             Route::get('/list', [LevelController::class, 'list']);
