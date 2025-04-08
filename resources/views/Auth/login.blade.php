@@ -62,13 +62,13 @@
                 <label for="remember">Remember Me</label>
               </div>
             </div>
-
             <div class="col-4">
               <button type="submit" class="btn btn-primary btn-block">Sign In</button>
             </div>
           </div>
         </form>
       </div>
+      <p class="mt-3 text-center">Belum punya akun? <a href="{{ url('register') }}">Daftar di sini</a></p>
     </div>
   </div>
 
