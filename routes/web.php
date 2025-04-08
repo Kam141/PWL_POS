@@ -37,7 +37,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy']);
     });
 
-    Route::middleware(['auth','authorize:ADM, MNG, PLNG, STF'])->group(function () {
+    Route::middleware(['authorize:ADM, MNG, STF, PLNG'])->group(function () {
         Route::prefix('level')->group(function () {
             Route::get('/', [LevelController::class, 'index']);
             Route::get('/list', [LevelController::class, 'list']);
@@ -54,7 +54,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
             Route::delete('/{id}', [LevelController::class, 'destroy']); 
         });
-        });
+    });
     
     Route::group(['prefix' => 'kategori'], function () {
         Route::get('/', [KategoriController::class, 'index']);
