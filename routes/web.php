@@ -104,7 +104,7 @@ Route::middleware(['auth'])->group(function () {
 
         Route::group(['prefix' => 'barang'], function () {
             Route::get('/', [BarangController::class, 'index']);
-            Route::get('/list', [BarangController::class, 'list']);
+            Route::post('/list', [BarangController::class, 'list']);
             Route::get('/create', [BarangController::class, 'create']);
             Route::post('/', [BarangController::class, 'store']);
             Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
@@ -117,6 +117,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/delete_ajax', [BarangController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [BarangController::class, 'delete_ajax']);
             Route::delete('/{id}', [BarangController::class, 'destroy']);
+            Route::get('/import', [BarangController::class, 'import']);
+            Route::post('/import_ajax', [BarangController::class, 'import_ajax']);
         });
     });
 });
