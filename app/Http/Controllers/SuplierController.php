@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Yajra\DataTables\Facades\DataTables;
 use Illuminate\Support\Facades\Validator;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use Barryvdh\DomPDF\Facade\Pdf;
 
 class SuplierController extends Controller
 {
@@ -397,5 +398,17 @@ class SuplierController extends Controller
 
         $writer->save('php://output');
         exit;
+    }
+    public function export_pdf()
+    {
+        $suplier = SuplierModel::select('id','nama_suplier','kontak', 'alamat')
+                    ->orderBy('id')
+                    ->get();
+        $pdf = PDF::loadview('suplier.export_pdf', ['suplier' => $suplier]);
+        $pdf->setPaper('A4', 'potrait');
+        $pdf->setOption("isRemoteEnabled", true);
+        $pdf->render();
+
+        return $pdf->stream('Data Suplier '.date('Y-m-d H:i:s').'.pdf');
     }
 }

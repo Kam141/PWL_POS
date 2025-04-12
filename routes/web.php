@@ -8,6 +8,7 @@ use App\Http\Controllers\StokController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\WelcomeController;
+use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
 
@@ -40,6 +41,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/import', [UserController::class, 'import']);
         Route::post('/import_ajax', [UserController::class, 'import_ajax']);
         Route::get('/export_excel', [UserController::class, 'export_excel']);
+        Route::get('/export_pdf', [UserController::class, 'export_pdf']);
     });
 
     Route::middleware(['authorize:ADM,MNG,STF,PLNG'])->group(function () {
@@ -61,6 +63,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/import', [LevelController::class, 'import']);
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
             Route::get('/export_excel', [LevelController::class, 'export_excel']);
+            Route::get('/export_pdf', [LevelController::class, 'export_pdf']);
         });
 
         Route::group(['prefix' => 'kategori'], function () {
@@ -81,6 +84,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/import', [KategoriController::class, 'import']);
             Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);
             Route::get('/export_excel', [KategoriController::class, 'export_excel']);
+            Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);
         });
 
         Route::group(['prefix' => 'suplier'], function () {
@@ -101,6 +105,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/import', [SuplierController::class, 'import']);
             Route::post('/import_ajax', [SuplierController::class, 'import_ajax']);
             Route::get('/export_excel', [SuplierController::class, 'export_excel']);
+            Route::get('/export_pdf', [SuplierController::class, 'export_pdf']);
         });
         
         Route::group(['prefix' => 'stok'], function () {
