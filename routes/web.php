@@ -24,7 +24,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::group(['prefix' => 'user'], function () {
         Route::get('/', [UserController::class, 'index']);
-        Route::get('/list', [UserController::class, 'list']);
+        Route::post('/list', [UserController::class, 'list']);
         Route::get('/create', [UserController::class, 'create']);
         Route::post('/', [UserController::class, 'store']);
         Route::get('/create_ajax', [UserController::class, 'create_ajax']);
@@ -37,6 +37,8 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
         Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
         Route::delete('/{id}', [UserController::class, 'destroy']);
+        Route::get('/import', [UserController::class, 'import']);
+        Route::post('/import_ajax', [UserController::class, 'import_ajax']);
     });
 
     Route::middleware(['authorize:ADM,MNG,STF,PLNG'])->group(function () {
@@ -55,6 +57,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
             Route::delete('/{id}', [LevelController::class, 'destroy']); 
+            Route::get('/import', [LevelController::class, 'import']);
+            Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
         });
 
         Route::group(['prefix' => 'kategori'], function () {
@@ -72,6 +76,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/delete_ajax', [KategoriController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [KategoriController::class, 'delete_ajax']);
             Route::delete('/{id}', [KategoriController::class, 'destroy']);
+            Route::get('/import', [KategoriController::class, 'import']);
+            Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);
         });
 
         Route::group(['prefix' => 'suplier'], function () {
@@ -89,6 +95,8 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{id}/delete_ajax', [SuplierController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [SuplierController::class, 'delete_ajax']);
             Route::delete('/{id}', [SuplierController::class, 'destroy']);
+            Route::get('/import', [SuplierController::class, 'import']);
+            Route::post('/import_ajax', [SuplierController::class, 'import_ajax']);
         });
         
         Route::group(['prefix' => 'stok'], function () {
