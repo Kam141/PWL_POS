@@ -39,6 +39,7 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/{id}', [UserController::class, 'destroy']);
         Route::get('/import', [UserController::class, 'import']);
         Route::post('/import_ajax', [UserController::class, 'import_ajax']);
+        Route::get('/export_excel', [UserController::class, 'export_excel']);
     });
 
     Route::middleware(['authorize:ADM,MNG,STF,PLNG'])->group(function () {
@@ -59,6 +60,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id}', [LevelController::class, 'destroy']); 
             Route::get('/import', [LevelController::class, 'import']);
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
+            Route::get('/export_excel', [LevelController::class, 'export_excel']);
         });
 
         Route::group(['prefix' => 'kategori'], function () {
@@ -78,6 +80,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id}', [KategoriController::class, 'destroy']);
             Route::get('/import', [KategoriController::class, 'import']);
             Route::post('/import_ajax', [KategoriController::class, 'import_ajax']);
+            Route::get('/export_excel', [KategoriController::class, 'export_excel']);
         });
 
         Route::group(['prefix' => 'suplier'], function () {
@@ -97,6 +100,7 @@ Route::middleware(['auth'])->group(function () {
             Route::delete('/{id}', [SuplierController::class, 'destroy']);
             Route::get('/import', [SuplierController::class, 'import']);
             Route::post('/import_ajax', [SuplierController::class, 'import_ajax']);
+            Route::get('/export_excel', [SuplierController::class, 'export_excel']);
         });
         
         Route::group(['prefix' => 'stok'], function () {
