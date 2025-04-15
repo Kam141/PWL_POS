@@ -107,7 +107,7 @@
     </nav>
   </div>
   <!-- Tombol Logout Selalu di Bawah -->
-  <div class="sidebar-logout mt-auto p-3">
+  {{-- <div class="sidebar-logout mt-auto p-3">
     <a href="{{ url('logout') }}" class="btn btn-danger btn-block"
       onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
       <i class="fas fa-sign-out-alt mr-2"></i> Logout
@@ -115,6 +115,6 @@
     <form id="logout-form" action="{{ url('logout') }}" method="GET" style="display: none;">
       @csrf
     </form>
-  </div>
+  </div> --}}
 </body>
 </html>

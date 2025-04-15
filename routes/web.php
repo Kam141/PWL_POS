@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\LevelController;
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\StokController;
 use App\Http\Controllers\SuplierController;
 use App\Http\Controllers\UserController;
@@ -59,12 +60,15 @@ Route::middleware(['auth'])->group(function () {
             Route::put('/{id}/update_ajax', [LevelController::class, 'update_ajax']);
             Route::get('/{id}/delete_ajax', [LevelController::class, 'confirm_ajax']);
             Route::delete('/{id}/delete_ajax', [LevelController::class, 'delete_ajax']);
-            Route::delete('/{id}', [LevelController::class, 'destroy']); 
+            Route::delete('/{id}', [LevelController::class, 'destroy']);
             Route::get('/import', [LevelController::class, 'import']);
             Route::post('/import_ajax', [LevelController::class, 'import_ajax']);
             Route::get('/export_excel', [LevelController::class, 'export_excel']);
             Route::get('/export_pdf', [LevelController::class, 'export_pdf']);
         });
+        Route::post('/profile/upload', [ProfileController::class, 'updateFoto'])
+            ->name('profile.index')
+            ->middleware('auth');
 
         Route::group(['prefix' => 'kategori'], function () {
             Route::get('/', [KategoriController::class, 'index']);
@@ -107,7 +111,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/export_excel', [SuplierController::class, 'export_excel']);
             Route::get('/export_pdf', [SuplierController::class, 'export_pdf']);
         });
-        
+
         Route::group(['prefix' => 'stok'], function () {
             Route::get('/', [StokController::class, 'index']);
             Route::get('/list', [StokController::class, 'list']);
@@ -151,6 +155,3 @@ Route::middleware(['auth'])->group(function () {
 | be assigned to the "web" middleware group. Make something great!
 |
 */
-
-
-
