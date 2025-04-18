@@ -130,14 +130,14 @@
     <li class="nav-item dropdown">
       <a class="nav-link" data-toggle="dropdown" href="#">
         <!-- Menampilkan foto profile atau icon default -->
-        <img id="profile-image" src="{{ auth()->user()->profile_photo_path ?? '../../dist/img/default-profile.png' }}" 
+        <img id="profile-image"  src="{{ auth()->user()->profile_photo ? asset('storage/profile-photos/'.auth()->user()->profile_photo) : asset('dist/img/default-profile.png') }}"
              alt="Profile" class="img-circle" style="width: 30px; height: 30px; object-fit: cover;">
       </a>
       <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
         <!-- Bagian header dengan foto profile -->
         <div class="dropdown-item text-center">
           <div class="image-container mb-2">
-            <img id="profile-preview" src="{{ auth()->user()->profile_photo_path ?? '../../dist/img/default-profile.png' }}" 
+            <img id="profile-preview" src="{{ auth()->user()->profile_photo ? asset('storage/profile-photos/'.auth()->user()->profile_photo) : asset('dist/img/default-profile.png') }}"
                  alt="Profile" class="img-circle elevation-2" style="width: 100px; height: 100px; object-fit: cover;">
             <div class="overlay">
               <label for="profile-upload" class="upload-label">
