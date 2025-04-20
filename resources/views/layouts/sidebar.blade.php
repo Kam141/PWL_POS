@@ -82,7 +82,7 @@
         </li>
         <li class="nav-item">
           <a href="{{ url('/suplier')}}" class="nav-link {{ ($activeMenu == 'suplier') ? 'active' : ''}}">
-            <i class="nav-icon fas fa-box"></i>
+            <i class="nav-icon fas fa-truck"></i>
             <p>
               Suplier
             </p>

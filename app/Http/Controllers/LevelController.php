@@ -9,6 +9,7 @@ use App\Models\LevelModel;
 use Yajra\DataTables\Facades\DataTables;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
+
 class LevelController extends Controller
 {
     // public function index() {
@@ -75,6 +76,17 @@ class LevelController extends Controller
             ->make(true);
     }
 
+    public function show_ajax(string $id)
+    {
+        // Mengambil data user berdasarkan ID dengan relasi level
+        $level = LevelModel::find($id);
+
+        // Return view dalam bentuk popup
+        return view('level.show_ajax', [
+            'level' => $level
+        ]);
+    }
+
     // Menampilkan halaman form tambah level
     public function create()
     {
@@ -114,27 +126,27 @@ class LevelController extends Controller
 
     // Menampilkan detail level
     public function show(string $id)
-{
-    $level = LevelModel::find($id);
+    {
+        $level = LevelModel::find($id);
 
-    $breadcrumb = (object) [
-        'title' => 'Detail Level',
-        'list' => ['Home', 'Level', 'Detail']
-    ];
+        $breadcrumb = (object) [
+            'title' => 'Detail Level',
+            'list' => ['Home', 'Level', 'Detail']
+        ];
 
-    $page = (object) [
-        'title' => 'Detail Level'
-    ];
+        $page = (object) [
+            'title' => 'Detail Level'
+        ];
 
-    $activeMenu = 'level';
+        $activeMenu = 'level';
 
-    return view('level.show', [
-        'breadcrumb' => $breadcrumb,
-        'page' => $page,
-        'level' => $level,
-        'activeMenu' => $activeMenu
-    ]);
-}
+        return view('level.show', [
+            'breadcrumb' => $breadcrumb,
+            'page' => $page,
+            'level' => $level,
+            'activeMenu' => $activeMenu
+        ]);
+    }
 
     // Menampilkan halaman form edit level
     public function edit(string $id)
@@ -194,7 +206,7 @@ class LevelController extends Controller
     {
         // $level = LevelModel::select('level_id', 'level_nama')->get();
         return view('level.create_ajax');
-            // ->with('level', $level);
+        // ->with('level', $level);
     }
 
     public function store_ajax(Request $request)
@@ -360,9 +372,9 @@ class LevelController extends Controller
     }
     public function export_excel()
     {
-        $barang = LevelModel::select('level_id','level_kode','level_nama')
-                    ->orderBy('level_id')
-                    ->get();
+        $barang = LevelModel::select('level_id', 'level_kode', 'level_nama')
+            ->orderBy('level_id')
+            ->get();
 
         //load library excel
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -371,16 +383,16 @@ class LevelController extends Controller
         $sheet->setCellValue('A1', 'No');
         $sheet->setCellValue('B1', 'Kode level');
         $sheet->setCellValue('C1', 'Nama level');
-        
+
 
         $sheet->getStyle('A1:C1')->getFont()->setBold(true);
-        
-        $no =1;
+
+        $no = 1;
         $baris = 2;
         foreach ($barang as $value) {
-            $sheet->setCellValue('A'.$baris, $no++);
-            $sheet->setCellValue('B'.$baris, $value->level_kode);
-            $sheet->setCellValue('C'.$baris, $value->level_nama);
+            $sheet->setCellValue('A' . $baris, $no++);
+            $sheet->setCellValue('B' . $baris, $value->level_kode);
+            $sheet->setCellValue('C' . $baris, $value->level_nama);
             $baris++;
             $no++;
         }
@@ -390,10 +402,10 @@ class LevelController extends Controller
 
         $sheet->setTitle('Data Level');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'Data Level '. date('Y-m-d H:i:s') .'.xlsx';
+        $filename = 'Data Level ' . date('Y-m-d H:i:s') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -406,15 +418,14 @@ class LevelController extends Controller
     }
     public function export_pdf()
     {
-        $level = LevelModel::select('level_id','level_kode','level_nama')
-                    ->orderBy('level_id')
-                    ->get();
+        $level = LevelModel::select('level_id', 'level_kode', 'level_nama')
+            ->orderBy('level_id')
+            ->get();
         $pdf = PDF::loadview('level.export_pdf', ['level' => $level]);
         $pdf->setPaper('A4', 'potrait');
         $pdf->setOption("isRemoteEnabled", true);
         $pdf->render();
 
-        return $pdf->stream('Data Level '.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream('Data Level ' . date('Y-m-d H:i:s') . '.pdf');
     }
 }
-

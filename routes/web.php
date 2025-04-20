@@ -31,7 +31,7 @@ Route::middleware(['auth'])->group(function () {
         Route::post('/', [UserController::class, 'store']);
         Route::get('/create_ajax', [UserController::class, 'create_ajax']);
         Route::post('/ajax', [UserController::class, 'store_ajax']);
-        Route::get('/{id}/show_ajax', [UserController::class, 'show']);
+        Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);
         Route::get('/{id}/edit', [UserController::class, 'edit']);
         Route::put('/{id}', [UserController::class, 'update']);
         Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);
@@ -53,7 +53,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [LevelController::class, 'store']);
             Route::get('/create_ajax', [LevelController::class, 'create_ajax']);
             Route::post('/ajax', [LevelController::class, 'store_ajax']);
-            Route::get('/{id}/show_ajax', [LevelController::class, 'show']);
+            Route::get('/{id}/show_ajax', [LevelController::class, 'show_ajax']);
             Route::get('/{id}/edit', [LevelController::class, 'edit']);
             Route::put('/{id}', [LevelController::class, 'update']);
             Route::get('/{id}/edit_ajax', [LevelController::class, 'edit_ajax']);
@@ -77,7 +77,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [KategoriController::class, 'store']);
             Route::get('/create_ajax', [KategoriController::class, 'create_ajax']);
             Route::post('/ajax', [KategoriController::class, 'store_ajax']);
-            Route::get('/{id}/show_ajax', [KategoriController::class, 'show']);
+            Route::get('/{id}/show_ajax', [KategoriController::class, 'show_ajax']);
             Route::get('/{id}/edit', [KategoriController::class, 'edit']);
             Route::put('/{id}', [KategoriController::class, 'update']);
             Route::get('/{id}/edit_ajax', [KategoriController::class, 'edit_ajax']);
@@ -98,7 +98,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [SuplierController::class, 'store']);
             Route::get('/create_ajax', [SuplierController::class, 'create_ajax']);
             Route::post('/ajax', [SuplierController::class, 'store_ajax']);
-            Route::get('/{id}/show_ajax', [SuplierController::class, 'show']);
+            Route::get('/{id}/show_ajax', [SuplierController::class, 'show_ajax']);
             Route::get('/{id}/edit', [SuplierController::class, 'edit']);
             Route::put('/{id}', [SuplierController::class, 'update']);
             Route::get('/{id}/edit_ajax', [SuplierController::class, 'edit_ajax']);
@@ -130,7 +130,7 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/', [BarangController::class, 'store']);
             Route::get('/create_ajax', [BarangController::class, 'create_ajax']);
             Route::post('/ajax', [BarangController::class, 'store_ajax']);
-            Route::get('/{id}/show_ajax', [BarangController::class, 'show']);
+            Route::get('/{id}/show_ajax', [BarangController::class, 'show_ajax']);
             Route::get('/{id}/edit', [BarangController::class, 'edit']);
             Route::put('/{id}', [BarangController::class, 'update']);
             Route::get('/{id}/edit_ajax', [BarangController::class, 'edit_ajax']);

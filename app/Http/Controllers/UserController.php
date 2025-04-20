@@ -120,6 +120,16 @@ class UserController extends Controller
             ->make(true);
     }
 
+    public function show_ajax(string $id)
+{
+    // Mengambil data user berdasarkan ID dengan relasi level
+    $user = UserModel::with('level')->find($id);
+
+    // Return view dalam bentuk popup
+    return view('user.show_ajax', [
+        'user' => $user
+    ]);
+}
 
     // Menampilkan halaman form tambah user
     public function create()
@@ -190,7 +200,7 @@ class UserController extends Controller
         $activeMenu = 'user';
 
         // Mengembalikan view dengan data yang diperlukan
-        return view('user.show', [
+        return view('user.show_ajax', [
             'breadcrumb' => $breadcrumb,
             'page' => $page,
             'user' => $user,
@@ -443,10 +453,10 @@ class UserController extends Controller
     }
     public function export_excel()
     {
-        $user = UserModel::select('level_id','username','name','password')
-                    ->orderBy('level_id')
-                    ->with('level')
-                    ->get();
+        $user = UserModel::select('level_id', 'username', 'name', 'password')
+            ->orderBy('level_id')
+            ->with('level')
+            ->get();
 
         //load library excel
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -458,14 +468,14 @@ class UserController extends Controller
         $sheet->setCellValue('D1', 'Password');
 
         $sheet->getStyle('A1:D1')->getFont()->setBold(true);
-        
-        $no =1;
+
+        $no = 1;
         $baris = 2;
         foreach ($user as $value) {
-            $sheet->setCellValue('A'.$baris, $no++);
-            $sheet->setCellValue('B'.$baris, $value->username);
-            $sheet->setCellValue('C'.$baris, $value->name);
-            $sheet->setCellValue('D'.$baris, $value->password);
+            $sheet->setCellValue('A' . $baris, $no++);
+            $sheet->setCellValue('B' . $baris, $value->username);
+            $sheet->setCellValue('C' . $baris, $value->name);
+            $sheet->setCellValue('D' . $baris, $value->password);
             $baris++;
             $no++;
         }
@@ -475,10 +485,10 @@ class UserController extends Controller
 
         $sheet->setTitle('Data User');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'Data User '. date('Y-m-d H:i:s') .'.xlsx';
+        $filename = 'Data User ' . date('Y-m-d H:i:s') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -491,16 +501,16 @@ class UserController extends Controller
     }
     public function export_pdf()
     {
-        $user = UserModel::select('level_id','username','name','password')
-                    ->orderBy('level_id')
-                    ->orderBy('username')
-                    ->with('level')
-                    ->get();
+        $user = UserModel::select('level_id', 'username', 'name', 'password')
+            ->orderBy('level_id')
+            ->orderBy('username')
+            ->with('level')
+            ->get();
         $pdf = PDF::loadview('user.export_pdf', ['user' => $user]);
         $pdf->setPaper('A4', 'potrait');
         $pdf->setOption("isRemoteEnabled", true);
         $pdf->render();
 
-        return $pdf->stream('Data User '.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream('Data User ' . date('Y-m-d H:i:s') . '.pdf');
     }
 }

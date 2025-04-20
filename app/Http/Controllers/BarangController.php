@@ -39,8 +39,9 @@ class BarangController extends Controller
             'barang_nama',
             'harga_beli',
             'harga_jual',
-            'kategori_id')->with('kategori');
-            
+            'kategori_id'
+        )->with('kategori');
+
         $kategori_id = $request->input('filter_kategori');
         if (!empty($kategori_id)) {
             $barang->where('kategori_id', $kategori_id);
@@ -69,6 +70,18 @@ class BarangController extends Controller
             })
             ->rawColumns(['aksi']) // Memastikan kolom aksi dianggap sebagai HTML
             ->make(true);
+    }
+
+
+    public function show_ajax(string $id)
+    {
+        // Mengambil data 
+        $barang = BarangModel::with('kategori')->find($id);
+
+        // Return view dalam bentuk popup
+        return view('barang.show_ajax', [
+            'barang' => $barang
+        ]);
     }
 
     // Menampilkan halaman form tambah barang
@@ -349,7 +362,7 @@ class BarangController extends Controller
 
             $insert = [];
             if (count($data) > 1) { // jika data lebih dari 1 baris                 
-                foreach ($data as $baris => $value) { 
+                foreach ($data as $baris => $value) {
                     if ($baris > 1) { // baris ke 1 adalah header, maka lewati 
                         $insert[] = [
                             'kategori_id' => $value['A'],
@@ -377,17 +390,17 @@ class BarangController extends Controller
                     'message' => 'Tidak ada data yang diimport'
                 ]);
             }
-        
+
             return redirect('/');
         }
     }
 
     public function export_excel()
     {
-        $barang = BarangModel::select('kategori_id','barang_kode','barang_nama','harga_beli','harga_jual')
-                    ->orderBy('kategori_id')
-                    ->with('kategori')
-                    ->get();
+        $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
+            ->orderBy('kategori_id')
+            ->with('kategori')
+            ->get();
 
         //load library excel
         $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
@@ -401,16 +414,16 @@ class BarangController extends Controller
         $sheet->setCellValue('F1', 'Kategori');
 
         $sheet->getStyle('A1:F1')->getFont()->setBold(true);
-        
-        $no =1;
+
+        $no = 1;
         $baris = 2;
         foreach ($barang as $value) {
-            $sheet->setCellValue('A'.$baris, $no++);
-            $sheet->setCellValue('B'.$baris, $value->barang_kode);
-            $sheet->setCellValue('C'.$baris, $value->barang_nama);
-            $sheet->setCellValue('D'.$baris, $value->harga_beli);
-            $sheet->setCellValue('E'.$baris, $value->harga_jual);
-            $sheet->setCellValue('F'.$baris, $value->kategori->kategori_nama);
+            $sheet->setCellValue('A' . $baris, $no++);
+            $sheet->setCellValue('B' . $baris, $value->barang_kode);
+            $sheet->setCellValue('C' . $baris, $value->barang_nama);
+            $sheet->setCellValue('D' . $baris, $value->harga_beli);
+            $sheet->setCellValue('E' . $baris, $value->harga_jual);
+            $sheet->setCellValue('F' . $baris, $value->kategori->kategori_nama);
             $baris++;
             $no++;
         }
@@ -420,10 +433,10 @@ class BarangController extends Controller
 
         $sheet->setTitle('Data Barang');
         $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
-        $filename = 'Data Barang '. date('Y-m-d H:i:s') .'.xlsx';
+        $filename = 'Data Barang ' . date('Y-m-d H:i:s') . '.xlsx';
 
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="'.$filename.'"');
+        header('Content-Disposition: attachment;filename="' . $filename . '"');
         header('Cache-Control: max-age=0');
         header('Cache-Control: max-age=1');
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
@@ -436,16 +449,16 @@ class BarangController extends Controller
     }
     public function export_pdf()
     {
-        $barang = BarangModel::select('kategori_id','barang_kode','barang_nama','harga_beli','harga_jual')
-                    ->orderBy('kategori_id')
-                    ->orderBy('barang_kode')
-                    ->with('kategori')
-                    ->get();
+        $barang = BarangModel::select('kategori_id', 'barang_kode', 'barang_nama', 'harga_beli', 'harga_jual')
+            ->orderBy('kategori_id')
+            ->orderBy('barang_kode')
+            ->with('kategori')
+            ->get();
         $pdf = PDF::loadview('barang.export_pdf', ['barang' => $barang]);
         $pdf->setPaper('A4', 'potrait');
         $pdf->setOption("isRemoteEnabled", true);
         $pdf->render();
 
-        return $pdf->stream('Data Barang '.date('Y-m-d H:i:s').'.pdf');
+        return $pdf->stream('Data Barang ' . date('Y-m-d H:i:s') . '.pdf');
     }
 }
