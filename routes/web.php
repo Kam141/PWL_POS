@@ -24,28 +24,8 @@ Route::post('register', [AuthController::class, 'postRegister']);
 Route::middleware(['auth'])->group(function () {
     Route::get('/', [WelcomeController::class, 'index']);
 
-    Route::group(['prefix' => 'user'], function () {
-        Route::get('/', [UserController::class, 'index']);
-        Route::post('/list', [UserController::class, 'list']);
-        Route::get('/create', [UserController::class, 'create']);
-        Route::post('/', [UserController::class, 'store']);
-        Route::get('/create_ajax', [UserController::class, 'create_ajax']);
-        Route::post('/ajax', [UserController::class, 'store_ajax']);
-        Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);
-        Route::get('/{id}/edit', [UserController::class, 'edit']);
-        Route::put('/{id}', [UserController::class, 'update']);
-        Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);
-        Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);
-        Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
-        Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
-        Route::delete('/{id}', [UserController::class, 'destroy']);
-        Route::get('/import', [UserController::class, 'import']);
-        Route::post('/import_ajax', [UserController::class, 'import_ajax']);
-        Route::get('/export_excel', [UserController::class, 'export_excel']);
-        Route::get('/export_pdf', [UserController::class, 'export_pdf']);
-    });
-
-    Route::middleware(['authorize:ADM,MNG,STF,PLNG'])->group(function () {
+    
+    Route::middleware(['authorize:ADM,MNG'])->group(function () {
         Route::prefix('level')->group(function () {
             Route::get('/', [LevelController::class, 'index']);
             Route::get('/list', [LevelController::class, 'list']);
@@ -66,6 +46,50 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/export_excel', [LevelController::class, 'export_excel']);
             Route::get('/export_pdf', [LevelController::class, 'export_pdf']);
         });
+        Route::group(['prefix' => 'suplier'], function () {
+            Route::get('/', [SuplierController::class, 'index']);
+            Route::get('/list', [SuplierController::class, 'list']);
+            Route::get('/create', [SuplierController::class, 'create']);
+            Route::post('/', [SuplierController::class, 'store']);
+            Route::get('/create_ajax', [SuplierController::class, 'create_ajax']);
+            Route::post('/ajax', [SuplierController::class, 'store_ajax']);
+            Route::get('/{id}/show_ajax', [SuplierController::class, 'show_ajax']);
+            Route::get('/{id}/edit', [SuplierController::class, 'edit']);
+            Route::put('/{id}', [SuplierController::class, 'update']);
+            Route::get('/{id}/edit_ajax', [SuplierController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [SuplierController::class, 'update_ajax']);
+            Route::get('/{id}/delete_ajax', [SuplierController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [SuplierController::class, 'delete_ajax']);
+            Route::delete('/{id}', [SuplierController::class, 'destroy']);
+            Route::get('/import', [SuplierController::class, 'import']);
+            Route::post('/import_ajax', [SuplierController::class, 'import_ajax']);
+            Route::get('/export_excel', [SuplierController::class, 'export_excel']);
+            Route::get('/export_pdf', [SuplierController::class, 'export_pdf']);
+        });
+        Route::group(['prefix' => 'user'], function () {
+            Route::get('/', [UserController::class, 'index']);
+            Route::post('/list', [UserController::class, 'list']);
+            Route::get('/create', [UserController::class, 'create']);
+            Route::post('/', [UserController::class, 'store']);
+            Route::get('/create_ajax', [UserController::class, 'create_ajax']);
+            Route::post('/ajax', [UserController::class, 'store_ajax']);
+            Route::get('/{id}/show_ajax', [UserController::class, 'show_ajax']);
+            Route::get('/{id}/edit', [UserController::class, 'edit']);
+            Route::put('/{id}', [UserController::class, 'update']);
+            Route::get('/{id}/edit_ajax', [UserController::class, 'edit_ajax']);
+            Route::put('/{id}/update_ajax', [UserController::class, 'update_ajax']);
+            Route::get('/{id}/delete_ajax', [UserController::class, 'confirm_ajax']);
+            Route::delete('/{id}/delete_ajax', [UserController::class, 'delete_ajax']);
+            Route::delete('/{id}', [UserController::class, 'destroy']);
+            Route::get('/import', [UserController::class, 'import']);
+            Route::post('/import_ajax', [UserController::class, 'import_ajax']);
+            Route::get('/export_excel', [UserController::class, 'export_excel']);
+            Route::get('/export_pdf', [UserController::class, 'export_pdf']);
+        });
+    });
+
+    Route::middleware(['authorize:ADM,MNG,STF,PLNG,OB,BRST'])->group(function () {
+
         Route::post('/profile/upload', [ProfileController::class, 'updateFoto'])
             ->name('profile.index')
             ->middleware('auth');
@@ -91,26 +115,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/export_pdf', [KategoriController::class, 'export_pdf']);
         });
 
-        Route::group(['prefix' => 'suplier'], function () {
-            Route::get('/', [SuplierController::class, 'index']);
-            Route::get('/list', [SuplierController::class, 'list']);
-            Route::get('/create', [SuplierController::class, 'create']);
-            Route::post('/', [SuplierController::class, 'store']);
-            Route::get('/create_ajax', [SuplierController::class, 'create_ajax']);
-            Route::post('/ajax', [SuplierController::class, 'store_ajax']);
-            Route::get('/{id}/show_ajax', [SuplierController::class, 'show_ajax']);
-            Route::get('/{id}/edit', [SuplierController::class, 'edit']);
-            Route::put('/{id}', [SuplierController::class, 'update']);
-            Route::get('/{id}/edit_ajax', [SuplierController::class, 'edit_ajax']);
-            Route::put('/{id}/update_ajax', [SuplierController::class, 'update_ajax']);
-            Route::get('/{id}/delete_ajax', [SuplierController::class, 'confirm_ajax']);
-            Route::delete('/{id}/delete_ajax', [SuplierController::class, 'delete_ajax']);
-            Route::delete('/{id}', [SuplierController::class, 'destroy']);
-            Route::get('/import', [SuplierController::class, 'import']);
-            Route::post('/import_ajax', [SuplierController::class, 'import_ajax']);
-            Route::get('/export_excel', [SuplierController::class, 'export_excel']);
-            Route::get('/export_pdf', [SuplierController::class, 'export_pdf']);
-        });
+        
 
         Route::group(['prefix' => 'stok'], function () {
             Route::get('/', [StokController::class, 'index']);

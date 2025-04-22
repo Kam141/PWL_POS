@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Hash;
 use PhpOffice\PhpSpreadsheet\IOFactory;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Validation\Rule;
 
 
 class BarangController extends Controller
@@ -267,43 +268,53 @@ class BarangController extends Controller
     {
         // cek apakah request dari ajax
         if ($request->ajax() || $request->wantsJson()) {
-            $rules = [
-                'kategori_id' => ['required', 'integer', 'exists:m_kategori,kategori_id'],
-                'barang_kode' => [
-                    'required',
-                    'min:3',
-                    'max:20',
-                    'unique:m_barang,barang_kode, ' . $id . ',barang_id'
-                ],
-                'barang_nama' => ['required', 'string', 'max:100'],
-                'harga_beli' => ['required', 'numeric'],
-                'harga_jual' => ['required', 'numeric'],
-            ];
-
-            $validator = Validator::make($request->all(), $rules);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => false,    // respon json, true: berhasil, false: gagal
-                    'message' => 'Validasi gagal.',
-                    'msgField' => $validator->errors()  // menunjukkan field mana yang error
-                ]);
-            }
-
             $check = BarangModel::find($id);
-            if ($check) {
-                $check->update($request->all());
-                return response()->json([
-                    'status' => true,
-                    'message' => 'Data berhasil diupdate'
-                ]);
-            } else {
+
+            if (!$check) {
                 return response()->json([
                     'status' => false,
                     'message' => 'Data tidak ditemukan'
                 ]);
             }
+
+            // Atur aturan validasi
+            $rules = [
+                'barang_nama' => ['required', 'string', 'max:100'],
+                'harga_beli' => ['required', 'numeric'],
+                'harga_jual' => ['required', 'numeric'],
+            ];
+
+            // Jika barang_kode diubah, tambahkan validasi unique
+            if ($request->barang_kode !== $check->barang_kode) {
+                $rules['barang_kode'] = [
+                    'required',
+                    'min:3',
+                    'max:20',
+                    Rule::unique('m_barang', 'barang_kode')
+                ];
+            } else {
+                $rules['barang_kode'] = ['required', 'min:3', 'max:20'];
+            }
+
+            $validator = Validator::make($request->all(), $rules);
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Validasi gagal.',
+                    'msgField' => $validator->errors()
+                ]);
+            }
+
+            // Update data
+            $check->update($request->all());
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Data berhasil diupdate'
+            ]);
         }
+
+        // Jika bukan request ajax, redirect ke halaman /barang
         return redirect('/');
     }
 
